@@ -1,7 +1,7 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
 
-    "Description": "Multi-AZ EFS with automount EFS.",
+    "Description": "Multi-AZ EFS with automount EFS on CIS instance.",
 
     "Mappings": {
 
@@ -353,7 +353,7 @@
                             "",
                             [
                                 "HTTP:",
-								"80",
+								"15040",
 								"/"
                             ]
                         ]
@@ -363,9 +363,9 @@
                 },
                 "Listeners": [
                     {
-                        "InstancePort": "80",
-                        "LoadBalancerPort": "80",
-                        "Protocol": "HTTP"
+                        "InstancePort": "15040",
+                        "LoadBalancerPort": "15040",
+                        "Protocol": "TCP"
                     }
                 ]
             },
@@ -455,7 +455,7 @@
                         "ToPort": "22"
                     },
                     {
-                        "FromPort": "80",
+                        "FromPort": "15040",
                         "IpProtocol": "tcp",
                         "SourceSecurityGroupId": {
                             "Fn::GetAtt": [
@@ -463,7 +463,7 @@
                                 "GroupId"
                             ]
                         },
-                        "ToPort": "80"
+                        "ToPort": "15040"
                     }
                 ],
 				"VpcId": {
@@ -475,13 +475,13 @@
 
         "ELBSecurityGroup": {
             "Properties": {
-                "GroupDescription": "Enable public access HTTP and HTTPS",
+                "GroupDescription": "Enable public access for 15040",
                 "SecurityGroupIngress": [
                     {
                         "CidrIp": "0.0.0.0/0",
-                        "FromPort": "80",
+                        "FromPort": "15040",
                         "IpProtocol": "tcp",
-                        "ToPort": "80"
+                        "ToPort": "15040"
                     },
 					{
                         "CidrIp": "0.0.0.0/0",
